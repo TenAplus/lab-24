@@ -64,3 +64,38 @@ void List::append(int d){
 }
 
 //Write List::remove() here
+
+void List::remove(int idx) {
+    // Handle empty list case
+    if (root == NULL) return;
+    
+    Node *toDelete = NULL;
+    
+    // Case: removing the first node (root)
+    if (idx == 0) {
+        toDelete = root;
+        root = root->next;
+        delete toDelete;
+        size--;
+        return;
+    }
+    
+    // Case: removing a node somewhere in the list
+    Node *current = root;
+    
+    // Navigate to the node just before the one we want to delete
+    for (int i = 0; i < idx - 1 && current != NULL; i++) {
+        current = current->next;
+    }
+    
+    // If we reached the end or the list is shorter than expected
+    if (current == NULL || current->next == NULL) return;
+    
+    // Set up the deletion
+    toDelete = current->next;          // Node to be deleted
+    current->next = toDelete->next;    // Connect the list around the removed node
+    
+    // Perform the deletion (this will trigger the destructor)
+    delete toDelete;
+    size--;
+}
